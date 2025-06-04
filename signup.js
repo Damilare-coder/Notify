@@ -97,8 +97,11 @@ const signUp = () => {
             }, 1500);
 
         } else {
-            console.log('User already exists');
-            toast('User already exists', '#f00', '#fff');
+            console.log('User already exists, redirecting to sign in...')
+            toast('User already exists', '#f00', '#fff')
+            setTimeout(() => {
+                window.location.href = 'loaderlog.html';
+            }, 1500);
         
         }
     }
