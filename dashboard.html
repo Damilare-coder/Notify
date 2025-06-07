@@ -14,7 +14,7 @@
     .notes {
         display: flex;
         justify-content: center;
-        gap: 200px;
+        gap: 50px;
         /* gap: 2px; */
     }
 
@@ -48,77 +48,74 @@
         <button onclick="addNote()" class="btn add fs-5 my-3 w-100">Save note</button>
     </div>
 
-
-<!-- <div>Recently edited</div> -->
+    <h2 class="text-light text-center">My notes</h2>
     <div class="notes">
-        
-        <div class="card shadow-sm border border-none mt-5 p-3 d-none" style="width: 18rem;">
-            <h3 class="text-center" id="newTitle">Last day out...</h3>
+        <div class="card note-card shadow-sm d-none border border-none mt-5 p-3 " style="width: 18rem;" id="noteCard">
+            <h3 class="text-center note-title"></h3>
             <div class="card-body">
-                <p class="card-text" id="body">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa,
-                    reiciendis.
-                    Molestiae
-                    nulla commodi architecto odio doloremque quo voluptas fugit laboriosam eaque ipsam culpa illum,
-                    pariatur
-                    dicta adipisci? Numquam, deleniti eligendi?
-                    content.</p>
+                <p class="card-text note-content"></p>
             </div>
             <div class="container text-center">
                 <div class="row align-items-center">
                     <div class="col">
-                        <button type="button" class="btn btn-info">Edit note</button>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            onclick="editNote('${note}')" class="btn btn-info">Edit note</button>
                     </div>
                     <div class="col">
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <button type="button" onclick="deleteNote('${i}')" class="btn btn-danger">Delete</button>
                     </div>
                 </div>
             </div>
         </div>
 
-
-        <div class="card shadow-sm border border-none mt-5 p-3" style="width: 18rem;">
-            <h3 class="text-center">MVC</h3>
+        <div class="card note-card shadow-sm d-none  border border-none mt-5 p-3 " style="width: 18rem;">
+            <h3 class="text-center note-title"></h3>
             <div class="card-body">
-                <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa, reiciendis.
-                    Molestiae
-                    nulla commodi architecto odio doloremque quo voluptas fugit laboriosam eaque ipsam culpa illum,
-                    pariatur
-                    dicta adipisci? Numquam, deleniti eligendi?
-                    content.</p>
+                <p class="card-text note-content"></p>
             </div>
             <div class="container text-center">
                 <div class="row align-items-center">
                     <div class="col">
-                        <button type="button" class="btn btn-info">Edit note</button>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            onclick="editNote('${note}')" class="btn btn-info">Edit note</button>
                     </div>
                     <div class="col">
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <button type="button" onclick="deleteNote('${i}')" class="btn btn-danger">Delete</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="card shadow-sm border border-none mt-5 p-3" style="width: 18rem;">
-            <h3 class="text-center">Last day out...</h3>
-            <div class="card-body">
-                <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa, reiciendis.
-                    Molestiae
-                    nulla commodi architecto odio doloremque quo voluptas fugit laboriosam eaque ipsam culpa illum,
-                    pariatur
-                    dicta adipisci? Numquam, deleniti eligendi?
-                    content.</p>
-            </div>
-            <div class="container text-center">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <button type="button" class="btn btn-info">Edit note</button>
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-danger">Delete</button>
-                    </div>
+
+
+    <!-- Modal -->
+    <div class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="err1" style="display: none;" class="text-center alert alert-danger p-2">Fill in
+                        something
+                        please</p>
+                    <input type="text" placeholder="Enter the new text" id="newNote" autofocus
+                        class="form-control shadow-none my-2 my-lg-3 border border-2 border-warning text-warning">
+                    <p id="err3" style="display: none;" class="text-center alert alert-success p-2">You have
+                        successfully changed note</p>
+
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" onclick="saveEdit()" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
+    </div>
+
 
 
 

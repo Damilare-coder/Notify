@@ -40,7 +40,6 @@ const signIn = () => {
         const pass = document.getElementById('password').value;
 
         const signInObj = { mail, pass };
-
         const found = gottenUsers.find(user => user.mail === mail && user.pass === pass)
         console.log(found);
         
@@ -50,13 +49,13 @@ const signIn = () => {
             toast('User not found, redirecting you to sign up page', '#f00', '#fff', 'left')
             setTimeout(() => {
                 window.location.href = 'signup.html';
-            }, 2000);
+            }, 1500);
 
         } else{
             toast('Sign in successful😁', '#006400', '#fff')
             setTimeout(()=>{
                 window.location.href = 'loaderdash.html'
-            }, 2000)
+            }, 1500)
         }
         
     }

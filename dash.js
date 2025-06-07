@@ -1,8 +1,11 @@
 document.addEventListener('keydown', (e) => {
-    if (e.key = 'Enter') {
+    if (e.key == 'Enter') {
         addNote();
     }
 })
+
+const allNotes = []
+
 
 const toast = (text, background, color, position = 'right') => {
     Toastify({
@@ -23,11 +26,10 @@ const toast = (text, background, color, position = 'right') => {
 
 const checkPerson = () => {
     if (localStorage.noters) {
-        const signedInUser = JSON.parse(localStorage.getItem('noters'))
+        const signedInUser = JSON.parse(localStorage.getItem('person'))
+        // console.log(signedInUser);
+        showPerson.innerHTML = `<h4 class="my-3 text-light text-center">Welcome, ${signedInUser.fName}</h4>`
         console.log(signedInUser);
-        showPerson.innerHTML = `<h4 class="my-3 text-light text-center">Welcome ${signedInUser.mail}, sign in</h4>`
-        console.log(signedInUser);
-        
 
     } else {
         body.innerHTML = `<h4 class="my-3 text-center">You are not signed in, redirecting you to sign in...</h4>`
@@ -38,6 +40,8 @@ const checkPerson = () => {
 }
 checkPerson()
 
+const addedNote = []
+
 const signOut = () => {
     localStorage.removeItem('person')
     window.location.href = 'signin.html'
@@ -46,22 +50,58 @@ const signOut = () => {
 }
 
 const addNote = () => {
-        if(title.value === '' || content.value === '' ) {
-        toast('Inputs cannot be empty', '#f00', '#fff')
+    if (title.value === '' || content.value === '') {
+        toast('Inputs cannot be empty', '#f00', '#fff', 'center');
 
 
     } else {
-        // errorMsg.style.display = 'none'
-        cart.push(item.value)
+        // noteContainer.style.display = "block"
 
-        document.getElementById('item').value = ''
-        console.log(cart);
-        if(cart.length >= 1) {
-            btnDelete.style.display = 'block'
-            
-        }
-        displayItem()
+        const header = document.getElementById('title').value
+        const texts = document.getElementById('content').value
+
+        const noteObj = { header, texts }
+        
+        console.log(noteObj);
+
+        const allUsers = JSON.parse(localStorage.getItem("person")) || {};
+        // console.log(allUsers);
+        // addedNote.push(noteObj)
+        console.log(addedNote);
+
+        // allNotes.push(addedNote)
+
+        displayNotes()
+        document.getElementById('title').value = ''
+        document.getElementById('content').value = ''
     }
 }
 
+const displayNotes = () => {
+    const cards = document.querySelectorAll('.note-card');
+    // noteCard.innerHTML = addedNote
 
+    // Loop through existing notes and map them to card divs
+    addedNote.forEach((note, index) => {
+        if (cards[index]) {
+            cards[index].querySelector('.note-title').textContent = note.title;
+            cards[index].querySelector('.note-content').textContent = note.content;
+            cards[index].classList.remove('d-none');
+
+            // newTitle.innerHTML = title.value
+            // body.innerHTML = content.value
+
+            // addedNote.map((note, i) => {
+            //     noteCard.style.display = 'block'
+
+            // })
+        }
+
+    });
+
+    // Hide remaining empty cards
+    for (let i = addedNote.length; i < cards.length; i++) {
+        cards[i].style.display = 'none';
+
+    }
+};
