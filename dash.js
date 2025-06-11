@@ -1,3 +1,9 @@
+let notes = JSON.parse(localStorage.getItem('notes')) || [];
+let currentEditIndex = null;
+
+
+
+
 document.addEventListener('keydown', (e) => {
     if (e.key == 'Enter') {
         addNote();
@@ -50,58 +56,89 @@ const signOut = () => {
 }
 
 const addNote = () => {
-    if (title.value === '' || content.value === '') {
+    const header = document.getElementById('title').value;
+    const texts = document.getElementById('content').value;
+
+    if (!header || !texts) {
         toast('Inputs cannot be empty', '#f00', '#fff', 'center');
-
-
-    } else {
-        // noteContainer.style.display = "block"
-
-        const header = document.getElementById('title').value
-        const texts = document.getElementById('content').value
-
-        const noteObj = { header, texts }
-        
-        console.log(noteObj);
-
-        const allUsers = JSON.parse(localStorage.getItem("person")) || {};
-        // console.log(allUsers);
-        // addedNote.push(noteObj)
-        console.log(addedNote);
-
-        // allNotes.push(addedNote)
-
-        displayNotes()
-        document.getElementById('title').value = ''
-        document.getElementById('content').value = ''
+        return;
     }
-}
+
+    const noteObj = { title: header, content: texts };
+
+    // Add note to global array
+    notes.push(noteObj);
+
+    // Optional: store in localStorage
+    localStorage.setItem('notes', JSON.stringify(notes));
+
+    displayNotes();
+
+    // Clear input fields
+    document.getElementById('title').value = '';
+    document.getElementById('content').value = '';
+};
+
+
 
 const displayNotes = () => {
-    const cards = document.querySelectorAll('.note-card');
-    // noteCard.innerHTML = addedNote
+    const container = document.getElementById("notesContainer");
+    container.innerHTML = '';
 
-    // Loop through existing notes and map them to card divs
-    addedNote.forEach((note, index) => {
-        if (cards[index]) {
-            cards[index].querySelector('.note-title').textContent = note.title;
-            cards[index].querySelector('.note-content').textContent = note.content;
-            cards[index].classList.remove('d-none');
-
-            // newTitle.innerHTML = title.value
-            // body.innerHTML = content.value
-
-            // addedNote.map((note, i) => {
-            //     noteCard.style.display = 'block'
-
-            // })
-        }
-
+    notes.forEach((note, index) => {
+        container.innerHTML += `
+    <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="card bg-light text-dark h-100 card-body">
+            <h5 class="card-title">${note.title}</h5>
+            <p class="card-text">${note.content}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" onclick="editNote(${index})">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteNote(${index})">Delete</button>
+        </div>
+        </div>
+    </div>
+    `;
     });
+}
+function editNote(index) {
+    currentEditIndex = index;
+    document.getElementById("editTitle").value = notes[index].title;
+    document.getElementById("editContent").value = notes[index].content;
+}
 
-    // Hide remaining empty cards
-    for (let i = addedNote.length; i < cards.length; i++) {
-        cards[i].style.display = 'none';
+function saveEdit() {
+    const newTitle = document.getElementById("editTitle").value.trim();
+    const newContent = document.getElementById("editContent").value.trim();
 
+    if (newTitle && newContent && currentEditIndex !== null) {
+        // Update the note in memory
+        notes[currentEditIndex] = {
+            title: newTitle,
+            content: newContent
+        };
+
+        // SAVE updated notes array to localStorage
+        localStorage.setItem('notes', JSON.stringify(notes));
+
+        // Refresh UI
+        displayNotes();
+
+        // Close modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+        modal.hide();
+
+        // Clear index
+        currentEditIndex = null;
     }
-};
+}
+        displayNotes();
+
+function deleteNote(index) {
+    notes.splice(index, 1);
+    displayNotes();
+}
+
+
+
+
